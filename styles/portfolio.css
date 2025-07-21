@@ -1,0 +1,275 @@
+.dashboard-wrapper.adjusted-top-margin {
+  margin-top: 2.5rem;
+}
+
+.dashboard-wrapper {
+  max-width: 1500px;
+  /* toned down just a bit */
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  gap: 2rem;
+  padding: 0;
+  /* no horizontal padding so grid stretches fully */
+  width: 100%;
+  margin-bottom: 3rem;
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 2.5fr 1.5fr;
+  gap: 2rem;
+  max-width: 1400px;
+  /* matches search section width */
+  margin: 0 auto;
+  width: 100%;
+  align-items: stretch;
+}
+
+.left-column,
+.right-column {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+
+.tile-card {
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 1rem;
+  padding: 2rem;
+  transition: transform 0.2s ease, background-color 0.2s ease;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  overflow: hidden;
+  min-height: 500px;
+  /* set fixed height baseline */
+}
+
+.tile-card:hover {
+  transform: translateY(-4px);
+  background-color: var(--surface-hover);
+}
+
+.portfolio-box {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.portfolio-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.portfolio-header h3 {
+  font-size: 1.5rem;
+  margin: 0;
+  color: var(--accent);
+}
+
+.portfolio-value {
+  font-size: 2.75rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 0.25rem;
+}
+
+.portfolio-cash {
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: var(--subtle-text);
+  margin-bottom: 1rem;
+}
+
+.graph-placeholder {
+  flex-grow: 1;
+  width: 100%;
+  border: 2px dashed var(--border);
+  border-radius: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--subtle-text);
+  font-size: 1.25rem;
+  position: relative;
+  padding: 1rem;
+  min-height: 120px;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.see-full {
+  color: var(--subtle-text);
+  font-size: 1.2rem;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.see-full:hover {
+  color: var(--accent);
+}
+
+.top-stocks-inline {
+  margin-top: 2rem;
+}
+
+.top-stocks-inline h4 {
+  font-size: 1.25rem;
+  color: var(--accent);
+  margin-bottom: 0.75rem;
+}
+
+.top-stock-list,
+.your-stock-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.your-stocks {
+  overflow-y: auto;
+  flex-grow: 1;
+}
+
+.your-stock-list {
+  overflow-y: auto;
+  flex-grow: 1;
+  padding-right: 0.5rem;
+}
+
+.your-stock-list::-webkit-scrollbar {
+  width: 8px;
+}
+
+.your-stock-list::-webkit-scrollbar-thumb {
+  background-color: var(--border);
+  border-radius: 8px;
+}
+
+.stock-item {
+  padding: 0.75rem 1rem;
+  background-color: var(--surface-alt);
+  border-radius: 0.75rem;
+  color: var(--text);
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.search-section {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 2rem;
+  box-sizing: border-box;
+  background-color: var(--surface);
+  /* makes it pop like the tiles */
+  border: 1px solid var(--border);
+  border-radius: 1rem;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.05);
+  /* subtle lift */
+}
+
+.stock-search-input {
+  width: 100%;
+  box-sizing: border-box;
+  /* makes it stop spilling out */
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  margin-bottom: 1rem;
+  background: var(--background);
+  color: var(--text);
+}
+
+.search-results {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  overflow-y: auto;
+  height: 300px;
+  /* changed from max-height so it *always* takes full space */
+  padding: 0.5rem;
+  margin-top: 1rem;
+  /* add space between input and results */
+  box-sizing: border-box;
+  border-radius: 0.5rem;
+  background: var(--surface-alt);
+  /* optional: background to show scroll zone */
+}
+
+/* Optional scrollbar styling */
+.search-results::-webkit-scrollbar {
+  width: 8px;
+}
+
+.search-results::-webkit-scrollbar-thumb {
+  background-color: var(--border);
+  border-radius: 8px;
+}
+
+.search-result-item {
+  padding: 0.75rem 1rem;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: background 0.2s ease, box-shadow 0.2s ease;
+}
+
+.search-result-item:hover {
+  background: var(--accent-muted);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08);
+}
+
+.stock-item {
+  display: flex;
+  justify-content: space-between;
+  background: var(--surface-hover);
+  border-radius: 0.75rem;
+  padding: 1rem 1.5rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  border: 1px solid var(--border);
+  cursor: pointer;
+}
+
+.stock-left,
+.stock-right {
+  display: flex;
+  flex-direction: column;
+}
+
+.mystock-symbol {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--accent);
+  line-height: 1;
+}
+
+.mycompany-name {
+  font-size: 0.9rem;
+  color: var(--subtle-text);
+  margin-top: 0.2rem;
+}
+
+.mystock-price {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text);
+  text-align: right;
+  line-height: 1;
+}
+
+.myshares-owned {
+  font-size: 0.85rem;
+  color: var(--subtle-text);
+  text-align: right;
+  margin-top: 0.2rem;
+}

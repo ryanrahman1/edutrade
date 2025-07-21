@@ -1,0 +1,68 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,200;1,200&display=swap');
+
+:root {
+  font-family: 'Inter Tight', sans-serif;
+}
+
+:root {
+  /* Light Mode */
+  --bg: hsl(240, 29%, 97%);           /* ghost white */
+  --surface: hsl(177, 33%, 95%);      /* very light blue */
+  --surface-hover: hsl(177, 33%, 90%); /* slightly darker blue */
+  --text: hsl(200, 20%, 20%);         /* soft charcoal */
+  --subtle-text: hsl(202, 17%, 42%);  /* paynes gray */
+  --accent: hsl(201, 21%, 30%);       /* teal accent */
+  --accent-hover: hsl(201, 21%, 40%); /* slightly darker teal */
+  --border: hsl(201, 14%, 75%);       /* subtle outline */
+}
+
+.dark {
+  /* Dark Mode */
+  --bg: hsl(220, 16%, 12%);           /* near-black charcoal */
+  --surface: hsl(216, 15%, 18%);      /* dark slate */
+  --surface-hover: hsl(216, 15%, 22%); /* slightly lighter slate */
+  --text: hsl(220, 20%, 90%);         /* pale gray */
+  --subtle-text: hsl(220, 10%, 60%);  /* soft gray */
+  --accent: hsl(202, 20%, 68%);       /* teal accent */
+  --accent-hover: hsl(202, 8%, 60%); /* slightly lighter teal */
+  --border: hsl(210, 20%, 30%);       /* visible but muted */
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--surface);
+  border-radius: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--accent);
+  border-radius: 8px;
+  border: 2px solid var(--surface);
+  transition: background-color 0.3s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--accent-hover);
+}
+
+/* Firefox scrollbar */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--accent) var(--surface);
+}
+
+.modal-search #search-results::-webkit-scrollbar {
+  width: 8px;
+}
+.modal-search #search-results::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 4px;
+}
+
+@view-transition {
+  navigation: auto;
+}

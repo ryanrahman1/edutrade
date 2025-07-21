@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="/web/styles/default.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    <script src="/web/scripts/darkmode.js"></script>
+
+    <script src="/web/scripts/dashboard.js" defer></script>
+    <link rel="stylesheet" href="/web/styles/dashboard.css">
+    <link rel="stylesheet" href="/web/styles/modal.css">
+
+    <title>Dashboard</title>
+
+    <style class="pagedefs">
+        body {
+            margin: 0;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .dashboard-wrapper {
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .dashboard-title {
+            font-size: 2.25rem;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 2rem;
+        }
+
+        .tile-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .tile-card {
+            background-color: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            transition: transform 0.2s ease;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+
+        .tile-card:hover {
+            transform: translateY(-3px);
+        }
+
+        .tile-card h3 {
+            font-size: 1.25rem;
+            margin-bottom: 0.75rem;
+            color: var(--text);
+        }
+
+        .tile-card p {
+            font-size: 1rem;
+            color: var(--subtle-text);
+        }
+
+        .nav-wrapper {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            padding: 1rem 1.25rem;
+            position: relative;
+            gap: 1rem;
+            background: none;
+            border-bottom: 1px solid var(--border);
+            z-index: 1100;
+        }
+
+        /* Align theme toggle left, clock center, nav icon right */
+        .nav-wrapper #theme-toggle {
+            order: 1;
+            margin-right: auto;
+        }
+
+        .nav-wrapper #top-clock {
+        order: 2;
+        font-weight: 600;
+        color: var(--text);
+        font-size: 1rem;
+        user-select: none;
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        top: 1.1rem;
+        }
+
+        .nav-wrapper #market-status {
+            order: 2;
+            font-size: 0.875rem;
+            color: var(--subtle-text);
+            font-weight: 500;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            top: 2.6rem; /* adjust based on spacing you want */
+        }
+
+      #nav-icon {
+        order: 3;
+        width: 30px; /* Adjusted to match hamburger width */
+        height: 30px;
+        padding: 0.5rem;
+        font-size: 24px; /* Icon size */
+        color: var(--text); /* Use your existing color var */
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+        #dropdown-menu {
+            position: absolute;
+            top: 4.75rem;
+            right: 1rem;
+            border-top: none;
+            background-color: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            flex-direction: column;
+            gap: 0.5rem;
+            padding: 1rem;
+            z-index: 1000;
+            opacity: 0;
+            transform: translateY(-10px);
+            visibility: hidden;
+            pointer-events: none;
+            transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s ease;
+            display: flex;
+            min-width: 160px;
+        }
+
+        #dropdown-menu.show {
+            opacity: 1;
+            transform: translateY(0);
+            visibility: visible;
+            pointer-events: auto;
+        }
+
+        #dropdown-menu a {
+            color: var(--text);
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.5rem 0.75rem;
+            border-radius: 0.25rem;
+            transition: background 0.2s;
+            display: block;
+        }
+
+        #dropdown-menu a:hover {
+            background-color: var(--primary-600);
+        }
+
+        #theme-toggle {
+            position: relative;
+            font-size: 24px;
+            padding: 0.5rem;
+            background-color: transparent;
+            border: none;
+            color: var(--text);
+            cursor: pointer;
+            border-radius: 9999px;
+            transition: background-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+            flex-shrink: 0;
+        }
+
+        #theme-toggle:hover {
+            background-color: var(--primary-600);
+            box-shadow: 0 0 0 1px var(--border);
+            transform: scale(1.08);
+        }
+
+        .site-footer {
+        margin-top: auto;
+        padding: 1rem 1rem 0.5rem; /* less padding */
+        border-top: 1px solid var(--border);
+        text-align: center;
+        color: var(--subtle-text);
+        font-size: 0.875rem;
+        line-height: 1; /* fix vertical alignment */
+        }
+
+        .footer-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.5rem;
+        }
+
+        .footer-links {
+        margin-top: 0.5rem;
+        }
+
+        .footer-links a {
+        color: var(--subtle-text);
+        margin: 0 0.4rem;
+        font-size: 1.25rem;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        text-decoration: none;
+        transition: color 0.2s ease;
+        }
+
+        .footer-links a:hover {
+        color: var(--accent);
+        }
+
+        .legal-link {
+        display: inline-block;
+        font-size: 0.9rem;
+        color: var(--subtle-text);
+        text-decoration: none;
+        font-weight: 500;
+        transition: color 0.2s ease;
+        }
+
+        .legal-link:hover {
+        color: var(--accent);
+        }
+    </style>
+
+
+    <style class="sidebardefs">
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 25%;
+            transform: translateY(0); /* don't offset it like center */
+            width: 60px;
+            background: var(--bg);
+            border-right: 1px solid color-mix(in srgb, var(--bg) 90%, black 10%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 1rem 0;
+            gap: 1.5rem;
+            border-radius: 0 10px 10px 0;
+            transition: transform 0.2s ease;
+            z-index: 1000;
+            box-shadow: 2px 0 6px rgba(0, 0, 0, 0.15);
+            height: auto;
+        }
+
+        .sidebar:hover {
+            transform: translateX(10px);
+        }
+
+        .sidebar-item {
+        position: relative;
+        color: var(--text, #fff);
+        text-decoration: none;
+        font-size: 1.5rem;
+        padding: 0.5rem;
+        display: flex;
+        justify-content: center;
+        transition: color 0.2s ease;
+        }
+
+        .sidebar-item:hover {
+        color: var(--accent, #00f5c6);
+        }
+
+        /* hover label */
+        .sidebar-item::after {
+        content: attr(data-label);
+        position: absolute;
+        left: 100%;
+        top: 50%;
+        transform: translateY(-50%);
+        background: var(--border);
+        color: var(--text);
+        padding: 4px 10px;
+        font-size: 0.875rem;
+        white-space: nowrap;
+        opacity: 0;
+        pointer-events: none;
+        border-radius: 4px;
+        margin-left: 10px;
+        transition: opacity 0.2s ease;
+        }
+
+        .sidebar-item:hover::after {
+        opacity: 1;
+        }
+
+        /* Mobile: switch to bottom bar */
+        @media (max-width: 768px) {
+            .sidebar {
+                flex-direction: row;
+                width: 100vw;
+                height: 60px;
+                top: auto;
+                bottom: 0;
+                border-radius: 0;
+                box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.15);
+                justify-content: space-evenly;
+                transform: none !important;
+            }
+
+            .sidebar-item::after {
+                left: 50%;
+                top: -8px;
+                transform: translateX(-50%) translateY(-100%);
+                margin-left: 0;
+            }
+
+            .sidebar:hover {
+                transform: none;
+                box-shadow: none;
+            }
+        }
+
+        .material-symbols-outlined {
+        font-variation-settings:
+            'FILL' 0,
+            'wght' 400,
+            'GRAD' 0,
+            'opsz' 24;
+        font-size: 24px;
+        line-height: 1;
+        color: var(--text, #fff);
+        }
+
+    </style>
+
+
+</head>
+
+<body>
+    <!-- Top Nav -->
+    <div class="nav-wrapper">
+        <button id="theme-toggle" class="material-symbols-outlined">light_mode</button>
+        <span id="top-clock">DASHBOARD - <span id="clockTime">12:00 PM</span></span>
+        <span id="market-status">MARKET CLOSED</span>
+        <div id="nav-icon" class="bi bi-person-circle" role="button" aria-label="Account menu"></div>
+
+    </div>
+
+    <!-- Dropdown -->
+    <div id="dropdown-menu">
+        <a href="/web/pages/profile" class="dropdown-item">Profile</a>
+        <a href="/web/pages/account" class="dropdown-item">Account</a>
+        <a href="#" id="dropdownsignout" class="dropdown-item">Sign Out</a>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <a href="/web/" class="sidebar-item" data-label="Home">
+            <span class="material-symbols-outlined">home</span>
+        </a>
+        <a href="/web/pages/dashboard/" class="sidebar-item" data-label="Dashboard">
+            <span class="material-symbols-outlined">dashboard</span>
+        </a>
+        <a href="/web/pages/portfolio/" class="sidebar-item" data-label="Portfolio">
+            <span class="material-symbols-outlined">enterprise</span>
+        </a>
+        <a href="/web/pages/social" class="sidebar-item" data-label="Social">
+            <span class="material-symbols-outlined">group</span>
+        </a>
+        <a href="/web/pages/settings/" class="sidebar-item" data-label="Settings">
+            <span class="material-symbols-outlined">settings</span>
+        </a>
+    </div>
+
+    <div class="dashboard-wrapper">
+
+    <div class="search-ticker-wrapper">
+        <div class="search-ticker-container">
+            <div class="search-section">
+                <input type="text" placeholder="Search stocks..." class="search-input" onclick="openModal('search')" readonly />
+            </div>
+            <div class="divider-line-vertical"></div>
+            <div class="ticker-section">
+                <div class="ticker-content" id="live-stock-ticker">
+                    Loading ticker...
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Grid Layout -->
+    <div class="dashboard-grid">
+
+        <!-- Left Column -->
+        <div class="left-column">
+            <div class="tile-card portfolio-box">
+                <div class="portfolio-header">
+                    <h3>Portfolio Value</h3>
+                    <a href="/web/pages/portfolio/" class="see-full" title="See Full Portfolio">
+                    <i class="bi bi-box-arrow-up-right"></i>
+                    </a>
+                </div>
+
+                <div class="portfolio-value" id="port-val">$0000.00</div>
+                <div class="portfolio-cash" id="port-cash">Cash: $0000.00</div>
+
+                <div class="graph-placeholder">
+                    <canvas id="portfolioGraph" style="width: 100%; height: 100%; border-radius: 0.75rem;"></canvas>
+                </div>
+            </div>
+        <div class="social-row">
+        <div class="tile-card" id="leaderboard">
+            <h3>Leaderboard</h3>
+            <p></p>
+            <p></p>
+            <p></p>
+        </div>
+        <div class="tile-card" id="qotd-wrapper">
+            <h3>QOTD</h3>
+            <div id="qotd-content">
+                <p id="qotd-question">Loading...</p>
+                <div id="qotd-options"></div>
+                <button id="qotd-submit">Submit</button>
+            </div>
+
+            <div id="qotd-result" style="display: none;">
+                <p><strong>Your answer:</strong> <span id="user-answer"></span></p>
+                <p><strong>Correct answer:</strong> <span id="correct-answer"></span></p>
+
+                <span class="qotd-tooltip-icon">❓
+                <span class="qotd-tooltip-text" id="qotd-explanation">
+                    Explanation goes here.
+                </span>
+                </span>
+            </div>
+        </div>
+
+        </div>
+    </div>
+
+    <!-- Right Column -->
+    <div class="right-column">
+        <div class="tile-card top-news">
+            <h3>Announcements</h3>
+            <div class="news-list">
+                <!-- JS will add the pinned announcement here, in a box -->
+            </div>
+        </div>
+
+        <div class="tile-card top-stocks">
+            <h3>Top Stocks</h3>
+            <div class="stocks-list">
+                <!-- JS will add multiple stock items here, each in a box -->
+            </div>
+        </div>
+
+        <div class="tile-card userStock-owned-stocks">
+            <div class="userStock-header stock-header">
+                <h3>Your Stocks</h3>
+            </div>
+            <div class="userStock-stocks-list stocks-list">
+                <!-- JS fills stock boxes here -->
+            </div>
+        </div>
+    </div>
+
+    </div>
+    </div>
+
+
+
+
+    <!-- Modal -->
+     <div id="modal-overlay" class="modal-overlay hidden">
+        <div id="modal-content" class="modal-content">
+
+
+        </div>
+
+     </div>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const navIcon = document.getElementById('nav-icon');
+            const dropdownMenu = document.getElementById('dropdown-menu');
+            const themeToggle = document.getElementById('theme-toggle');
+            const html = document.documentElement;
+
+            const clockTime = document.getElementById('clockTime');
+            
+            const marketStatus = document.getElementById('market-status');
+
+            function updateMarketStatus() {
+                const now = new Date();
+
+                // Convert to US Eastern Time (EDT/EST)
+                const easternTime = new Date(
+                    now.toLocaleString("en-US", { timeZone: "America/New_York" })
+                );
+
+                const day = easternTime.getDay(); // 0 = Sunday, 1 = Monday, ..., 6 = Saturday
+                const hour = easternTime.getHours();
+                const minutes = easternTime.getMinutes();
+
+                const isWeekday = day >= 1 && day <= 5;
+                const after930 = hour > 9 || (hour === 9 && minutes >= 30);
+                const before4 = hour < 16 || (hour === 16 && minutes === 0);
+
+                const isMarketOpen = isWeekday && after930 && hour < 16;
+
+                marketStatus.textContent = isMarketOpen ? 'MARKET OPEN' : 'MARKET CLOSED';
+                marketStatus.style.color = isMarketOpen ? '#4ade80' : '#f87171'; // green for open, red for closed
+            }
+
+            updateMarketStatus(); // Set it initially
+            setInterval(updateMarketStatus, 60000); // Update every minute (not just hourly)
+
+            //update clock every minute
+            function updateClock() {
+                const now = new Date();
+                const options = { hour: '2-digit', minute: '2-digit', hour12: true };
+                clockTime.textContent = now.toLocaleTimeString([], options);
+            }
+            updateClock(); // Initial call to set clock immediately
+            setInterval(updateClock, 60000); // Update every minute
+
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark') html.classList.add('dark');
+            else if (savedTheme === 'light') html.classList.remove('dark');
+
+            function updateIcon() {
+                themeToggle.textContent = html.classList.contains('dark') ? 'light_mode' : 'dark_mode';
+            }
+
+            updateIcon();
+
+            themeToggle.addEventListener('click', () => {
+                html.classList.toggle('dark');
+                localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+                updateIcon();
+            });
+
+            navIcon.addEventListener('click', function () {
+                this.classList.toggle('open');
+                dropdownMenu.classList.toggle('show');
+            });
+        });
+    </script>
+
+
+    <script>
+        async function loadQOTD() {
+            try {
+                const res = await fetch('http://localhost:3000/api/qotd');
+                if (!res.ok) throw new Error(`Failed to fetch QOTD: ${res.status}`);
+
+                const data = await res.json();
+                if (!data || !data.question_text) throw new Error('Invalid QOTD data');
+
+                const u = localStorage.getItem('user');
+                const email = u ? JSON.parse(u).email : null;
+
+                if (!email) {
+                console.warn('No email found in localStorage');
+                return;
+                }
+
+                const questionElem = document.getElementById('qotd-question');
+                const optionsContainer = document.getElementById('qotd-options');
+                const submitBtn = document.getElementById('qotd-submit');
+                const contentDiv = document.getElementById('qotd-content');
+                const resultDiv = document.getElementById('qotd-result');
+
+                questionElem.textContent = data.question_text;
+                optionsContainer.innerHTML = ''; // clear old options if any
+
+                // Check if user already answered today's QOTD
+                const checkRes = await fetch('http://localhost:3000/api/qotd/check-answered', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email }),
+                });
+
+                if (!checkRes.ok) throw new Error(`Check answered failed: ${checkRes.status}`);
+
+                const checkData = await checkRes.json();
+
+                if (checkData.answered) {
+                contentDiv.style.display = 'none';
+                resultDiv.style.display = 'block';
+                document.getElementById('user-answer').textContent = 'Already answered';
+                document.getElementById('correct-answer').textContent = data.answer_text;
+                document.getElementById('qotd-explanation').textContent = data.explanation || 'No explanation provided.';
+                submitBtn.disabled = true;
+                return;
+                }
+
+                // Populate choices from data.choices array
+                data.choices.forEach(choice => {
+                const label = document.createElement('label');
+                label.style.display = 'block';
+                label.style.cursor = 'pointer';
+
+                const radio = document.createElement('input');
+                radio.type = 'radio';
+                radio.name = 'qotd-choice';
+                radio.value = choice;
+                radio.style.marginRight = '8px';
+
+                label.appendChild(radio);
+                label.appendChild(document.createTextNode(choice));
+                optionsContainer.appendChild(label);
+                });
+
+                submitBtn.disabled = false;
+                submitBtn.onclick = async () => {
+                const selected = document.querySelector('input[name="qotd-choice"]:checked');
+                if (!selected) return alert('Select an answer!');
+
+                const userAnswer = selected.value;
+
+                // Send answer to backend
+                const answerRes = await fetch('http://localhost:3000/api/qotd/answer', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email }),
+                });
+
+                if (!answerRes.ok) {
+                    const errorData = await answerRes.json();
+                    alert(errorData.error || 'Failed to submit answer');
+                    return;
+                }
+
+                contentDiv.style.display = 'none';
+                resultDiv.style.display = 'block';
+                document.getElementById('user-answer').textContent = userAnswer;
+                document.getElementById('correct-answer').textContent = data.answer_text;
+                document.getElementById('qotd-explanation').textContent = data.explanation || 'No explanation provided.';
+                submitBtn.disabled = true;
+                };
+            } catch (err) {
+                console.error('QOTD load error:', err);
+                const questionElem = document.getElementById('qotd-question');
+                questionElem.textContent = 'Failed to load question.';
+            }
+        }
+
+        loadQOTD();
+
+    </script>
+    
+    <footer class="site-footer">
+    <div class="footer-content">
+        <p>&copy; 2025 EduTrade</p>
+        <a href="/web/legal/" class="legal-link" aria-label="Legal">Legal</a>
+        <div class="footer-links" style="margin-top: 0.5rem;">
+        <a href="https://github.com/ryanrahman1" target="_blank" aria-label="GitHub"><i class="bi bi-github"></i></a>
+        <a href="https://instagram.com/yourusername" target="_blank" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
+        <a href="mailto:youremail@example.com" aria-label="Email"><i class="bi bi-envelope-fill"></i></a>
+        </div>
+    </div>
+    </footer>
+
+
+
+
+    <script src="/web/scripts/modal.js" defer></script>
+    <script src="/web/scripts/portfolio-chart.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="/web/scripts/announcement.js" defer></script>
+    <script src="/web/scripts/signout.js"></script>
+
+</body>
+
+</html>

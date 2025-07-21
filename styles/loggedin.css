@@ -1,0 +1,46 @@
+.loggedin-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 2rem;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.loggedin-container h2 {
+  font-size: 1.75rem;
+  color: var(--texts);
+  text-align: center;
+}
+
+.loggedin-container .card {
+  padding: 1rem;
+  border-radius: 0.5rem;
+}
+
+.loggedin-container .user-info {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 1rem;
+  border-radius: 0.5rem;
+  color: var(--text);
+  text-align: center;
+}
+
+/* center btn */ 
+.logout-btn {
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--border);
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  align-self: center;
+}
+
+.logout-btn:hover {
+  background: var(--surface-hover); /* fallback color */
+}
